@@ -1,0 +1,127 @@
+#!/usr/bin/python
+import tweepy
+import myauthlib
+import json
+import datetime
+import sys
+
+api = myauthlib.get_api_key()
+
+def get_user_info():
+	user_info = {'user_name':'k_a_christian'} # Change user name to your user name
+	user = api.get_user(user_info['user_name'])
+	user_info['created'] = user.created_at
+	user_info['description'] = user.description
+	user_info['favourites'] = user.favourites_count
+	user_info['followers'] = user.followers_count
+	user_info['following'] = user.friends_count
+	user_info['tweets'] = user.statuses_count
+	
+	print('\n')
+	print('USER INFO: ' + str(user_info['user_name']))
+	print('---------------------------------')
+	print('\n')
+	
+	for i in user_info:
+		print(str(i) + ': ' + str(user_info[i]))
+	print('\n')
+	print('---------------------------------')
+	print('\n')
+	
+def tweet():
+	status = raw_input("Message: ")
+	
+	if len(status) > 140:
+		char_count = len(status)
+		over_count = 140 - char_count
+		print("Over 140 characters by %s characters! Try again.\n" % over_count)
+		tweet()
+	else:
+		print(status)
+		choice = input("Press 1 to tweet: ")
+	
+	if choice == 1:
+		try:
+			api.update_status(str(status))
+			print("Tweet Successful!")
+		except:
+			print("Status update failed.")
+		
+def my_timeline():
+	print('\n')
+	print('TIMELINE')
+	print('---------------------------------')
+	tweets = api.home_timeline(count=5)
+	for tweet in tweets:
+		try:
+			print(str(tweet.created_at))
+			print('@' + str(tweet.user.name) + ': ' + str(tweet.text))
+			print('f: ' + str(tweet.favorite_count) + '  rt: ' + str(tweet.retweet_count) + '\n')
+		except:
+			pass
+	print('---------------------------------')
+
+def my_mentions():
+	dataList = []
+	print('\n')
+	print('MENTIONS')
+	print('---------------------------------')
+	try:
+		for results in tweepy.Cursor(api.search, q="@k_a_christian").items(5):
+			if (not results.retweeted) and ('RT @' not in results.text):
+				tweetInfo = []
+				tweetInfo.append(results.created_at)
+				tweetInfo.append(str('@' + results.author.name))
+				tweetInfo.append(results.text)
+				dataList.append(tweetInfo)
+		for tweet in dataList:
+			for info in tweet:
+				print(info)
+			print('\n')
+		print('---------------------------------')
+		print('\n')
+	except:
+		print("Gathering mentions failed")
+"""
+	for tweet in tweets:
+		try:
+			print(str(tweet.created_at))
+			print('@' + str(tweet.user.name) + ': ' + str(tweet.text))
+			print('f: ' + str(tweet.favorite_count) + '  rt: ' + str(tweet.retweet_count) + '\n')
+		except:
+			pass"""
+	
+
+
+if __name__ == '__main__':
+	
+	if len(sys.argv) < 2:
+		print('\nError: No command line arguments.')
+		print('\tusage: ./tweet <option>\n')
+		print('Type "./twitter --help" for help options')
+	elif len(sys.argv) > 2:
+		print('\nError: Too many command line arguments.')
+		print('\tusage: ./tweet <option>\n')
+		print('Type "./twitter --help" for help options')
+	elif sys.argv[1] == 'tweet':
+		tweet()
+	elif sys.argv[1] == 'timeline':
+		my_timeline()
+	elif sys.argv[1] == 'mentions':
+		my_mentions()
+	elif sys.argv[1] == 'user':
+		get_user_info()
+	elif sys.argv[1] == '--help':
+		print('\n')
+		print('Twitterm: A basic twitter cli\n')
+		print('\tusage: ./twitter <option>\n')
+		print('Options:')
+		print('tweet:\t\tSend a text tweet')
+		print('timelne:\tView most recent 5 posts on timeline')
+		print('mentions:\tView most recent 5 mentions on timeline')
+		print('user:\t\tView user info')
+		print('\n')
+	else:
+		print("\nUnknown Error.\n")
+		print('Type "./twitter --help" for help options')
+		print('\n')
