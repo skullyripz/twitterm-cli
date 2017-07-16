@@ -81,16 +81,7 @@ def my_mentions():
 		print('---------------------------------')
 		print('\n')
 	except:
-		print("Gathering mentions failed")
-"""
-	for tweet in tweets:
-		try:
-			print(str(tweet.created_at))
-			print('@' + str(tweet.user.name) + ': ' + str(tweet.text))
-			print('f: ' + str(tweet.favorite_count) + '  rt: ' + str(tweet.retweet_count) + '\n')
-		except:
-			pass"""
-	
+		print("Gathering mentions failed")	
 
 
 if __name__ == '__main__':
