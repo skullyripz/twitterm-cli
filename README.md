@@ -13,15 +13,15 @@ To get started, you will need to create a file titled `myauthlib.py` in your dir
 import tweepy
 
 def get_api_key():
-	CONSUMER_KEY = "<Your consumer key here>"
-	CONSUMER_SECRET = "<Your consumer secret here>"
-	ACCESS_TOKEN = "<Your access token here>"
-	ACCESS_TOKEN_SECRET = "<Your access token secret here>"
+&nbsp;&nbsp;&nbsp;&nbsp;CONSUMER_KEY = "<Your consumer key here>"
+&nbsp;&nbsp;&nbsp;&nbsp;CONSUMER_SECRET = "<Your consumer secret here>"
+&nbsp;&nbsp;&nbsp;&nbsp;ACCESS_TOKEN = "<Your access token here>"
+&nbsp;&nbsp;&nbsp;&nbsp;ACCESS_TOKEN_SECRET = "<Your access token secret here>"
 	
-	auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
-	auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
-	api = tweepy.API(auth)
-	return api`
+&nbsp;&nbsp;&nbsp;&nbsp;auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+&nbsp;&nbsp;&nbsp;&nbsp;auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+&nbsp;&nbsp;&nbsp;&nbsp;api = tweepy.API(auth)
+&nbsp;&nbsp;&nbsp;&nbsp;return api`
 
 You will also need to manually change line 11 in the twitter file to your user name
 *Next, I plan to add a script that will ask the user name from the user upon initial use of the app*
