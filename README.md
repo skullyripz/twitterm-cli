@@ -7,21 +7,7 @@ I still need to research and understand how I can send others API access tokens 
 
 ## Getting Started
 
-To get started, you will need to create a file titled `myauthlib.py` in your directory with the below code. Be sure you enter your twitter API information. This will have to do until I can figure out an easier way to allow access for the app from other users. For help getting API keys: https://dev.twitter.com/oauth/overview/application-owner-access-tokens
-
-`#!/usr/bin/python
-import tweepy
-
-def get_api_key():
-&nbsp;&nbsp;&nbsp;&nbsp;CONSUMER_KEY = "<Your consumer key here>"
-&nbsp;&nbsp;&nbsp;&nbsp;CONSUMER_SECRET = "<Your consumer secret here>"
-&nbsp;&nbsp;&nbsp;&nbsp;ACCESS_TOKEN = "<Your access token here>"
-&nbsp;&nbsp;&nbsp;&nbsp;ACCESS_TOKEN_SECRET = "<Your access token secret here>"
-	
-&nbsp;&nbsp;&nbsp;&nbsp;auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
-&nbsp;&nbsp;&nbsp;&nbsp;auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
-&nbsp;&nbsp;&nbsp;&nbsp;api = tweepy.API(auth)
-&nbsp;&nbsp;&nbsp;&nbsp;return api`
+To get started, you will need to change the file titled `myauthlib.py`. Be sure you enter your twitter API information. This will have to do until I can figure out an easier way to allow access for the app from other users. For help getting API keys: https://dev.twitter.com/oauth/overview/application-owner-access-tokens
 
 You will also need to manually change line 11 in the twitter file to your user name
 *Next, I plan to add a script that will ask the user name from the user upon initial use of the app*
