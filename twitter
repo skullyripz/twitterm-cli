@@ -1,11 +1,21 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 import tweepy
 import myauthlib
 import json
 import datetime
 import sys
+import pprint
 
 api = myauthlib.get_api_key()
+
+
+def pp_json(json_thing, sort=True, indents=4):
+	if type(json_thing) is str:
+		print(json.dumps(json.loads(json_thing), sort_keys=sort, indent=indents))
+	else:
+		print(json.dumps(json_thing, sort_keys=sort, indent=indents))
+	return None
+
 
 def get_user_info():
 	user_info = {'user_name':'k_a_christian'} # Change user name to your user name
@@ -51,15 +61,68 @@ def my_timeline():
 	print('\n')
 	print('TIMELINE')
 	print('---------------------------------')
-	tweets = api.home_timeline(count=5)
+	
+	count = raw_input('How many posts to load? ')
+	tweets = api.home_timeline(count=count)[0]
+	tweetsList = []
+	choice_id = 1
 	for tweet in tweets:
+		tweetList = []
+		tweetList.append(choice_id)
+		tweetList.append(tweet.id)
+		tweetList.append(tweet.created_at)
+		tweetList.append(tweet.user.name)
+		tweetList.append(tweet.text)
+		tweetList.append(tweet.favorite_count)
+		tweetList.append(tweet.retweet_count)
+		
+		tweetsList.append(tweetList)
+		choice_id = choice_id + 1
+		
+	for post in tweetsList:
 		try:
-			print(str(tweet.created_at))
-			print('@' + str(tweet.user.name) + ': ' + str(tweet.text))
-			print('f: ' + str(tweet.favorite_count) + '  rt: ' + str(tweet.retweet_count) + '\n')
+			print('Menu ID: ' + str(post[0]))
+			print(str(post[2]))
+			print('@' + str(post[3]) + ': ' + str(post[4]))
+			print('f: ' + str(post[5]) + '  rt: ' + str(post[6]) + '\n')
 		except:
-			pass
+			print(str(post[1]) + ' failed to load\n')
+	
+	menu_option = raw_input('Take action? ')
+	
+	while menu_option != 'n':
+		if menu_option == 'n':
+			print('Exiting...')
+			exit()
+			
+		elif menu_option == 'rt':
+			rt_id = raw_input('Retweet selected. Choose menu id to retweet: ')
+			try:
+				api.retweet(tweetsList[int(rt_id)-1][1])
+				print('Retweet successful!')
+			except:
+				print('Retweet failed...')
+			menu_option = 'n'
+			
+		elif menu_option == 'f':
+			fav_id = raw_input('Favorite selected. Choose menu id to favorite: ')
+			try:
+				api.create_favorite(tweetsList[int(fav_id)-1][1])
+				print('Favorite successful!')
+			except:
+				print('Favorite failed...')
+			menu_option = 'n'
+		
+		else:
+			print('\nInvalid selection:')
+			print('options:')
+			print('rt:\t\tRetweet')
+			print('f:\t\tFavorite')
+			print('n:\t\tExit\n')
+			menu_option = raw_input('Take action? ')
+	
 	print('---------------------------------')
+
 
 def my_mentions():
 	dataList = []
